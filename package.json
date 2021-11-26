@@ -1,0 +1,15 @@
+{
+  "name": "ygb",
+  "version": "1.0.0",
+  "description": "yellow gambling bot for telegramm",
+  "main": "dist/index.js",
+  "scripts": {
+    "start:prod": "tsc & node ./dist/index.js",
+    "start:dev": "tsc -w"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.5.2"
+  }
+}
