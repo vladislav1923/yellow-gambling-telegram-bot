@@ -7,7 +7,7 @@
     "start:prod": "clear & tsc & node ./dist/index.js",
     "start:dev": "clear & tsc && concurrently \"tsc -w\" \"nodemon dist/index.js\"",
     "lint": "clear & npx eslint src --fix",
-    "prepare": "husky install"
+    "husky:prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
@@ -32,6 +32,6 @@
     }
   },
   "lint-staged": {
-    "*": "npm run lint"
+    "{ts}": "npm run lint"
   }
 }
