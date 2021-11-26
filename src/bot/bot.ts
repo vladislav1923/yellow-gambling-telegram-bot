@@ -1,5 +1,5 @@
-import {Telegraf} from "telegraf";
-import {commandsList} from "../constants/commands-list";
+import {Telegraf} from 'telegraf';
+import {commandsList} from '../constants/commands-list';
 
 const startBot = (token: string): void => {
     const bot = new Telegraf(token);
@@ -15,8 +15,8 @@ const startBot = (token: string): void => {
     bot.launch();
 
     // Enable graceful stop
-    process.once('SIGINT', () => bot.stop('SIGINT'))
-    process.once('SIGTERM', () => bot.stop('SIGTERM'))
-}
+    process.once('SIGINT', () => bot.stop('SIGINT'));
+    process.once('SIGTERM', () => bot.stop('SIGTERM'));
+};
 
 export { startBot };

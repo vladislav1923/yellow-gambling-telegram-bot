@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "start:prod": "clear & tsc & node ./dist/index.js",
-    "start:dev": "clear & tsc && concurrently \"tsc -w\" \"nodemon dist/index.js\""
+    "start:dev": "clear & tsc && concurrently \"tsc -w\" \"nodemon dist/index.js\"",
+    "lint": "clear & npx eslint src --fix"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +17,10 @@
   },
   "devDependencies": {
     "@types/node": "^16.11.10",
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
     "concurrently": "^6.4.0",
+    "eslint": "^8.3.0",
     "nodemon": "^2.0.15"
   }
 }

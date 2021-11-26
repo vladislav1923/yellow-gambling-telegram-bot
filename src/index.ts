@@ -1,5 +1,5 @@
-import 'dotenv/config'
-import { startBot } from "./bot/bot";
+import 'dotenv/config';
+import { startBot } from './bot/bot';
 
 const token = process.env.BOT_TOKEN;
 

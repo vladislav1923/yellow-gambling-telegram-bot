@@ -1,5 +1,5 @@
-import {CommandItemInterface} from "../interfaces/commandItem.interface";
-import {CommandsEnum} from "../enums/commands.enum";
+import {CommandItemInterface} from '../interfaces/commandItem.interface';
+import {CommandsEnum} from '../enums/commands.enum';
 
 export const commandsList: CommandItemInterface[] = [
     {
