@@ -4,7 +4,7 @@ import {commandsList} from '../constants/commands-list';
 const startBot = (token: string): void => {
     const bot = new Telegraf(token);
     bot.start((ctx) => {
-        ctx.setMyCommands(commandsList)
+        ctx.setMyCommands(commandsList);
         ctx.reply('Wel come click /help');
     });
     bot.help((ctx) => ctx.reply('Помоги себе сам'));
