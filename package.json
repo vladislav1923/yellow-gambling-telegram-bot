@@ -5,11 +5,15 @@
   "main": "dist/index.js",
   "scripts": {
     "start:prod": "tsc & node ./dist/index.js",
-    "start:dev": "tsc -w"
+    "start:dev": "tsc && concurrently \"tsc -w\" \"nodemon dist/index.js\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "typescript": "^4.5.2"
+  },
+  "devDependencies": {
+    "concurrently": "^6.4.0",
+    "nodemon": "^2.0.15"
   }
 }
