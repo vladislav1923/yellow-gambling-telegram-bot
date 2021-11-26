@@ -1,6 +1,10 @@
 import 'dotenv/config'
+import { startBot } from "./bot/bot";
 
-const hw = 'hello world 12212';
+const token = process.env.BOT_TOKEN;
 
-console.log(hw);
-console.log(process.env.BOT_KEY);
+if (!token) {
+    process.exit();
+}
+
+startBot(token);
