@@ -30,12 +30,12 @@
     "nodemon": "^2.0.15",
     "typescript-json-serializer": "^3.4.4"
   },
-  "lint-staged": {
-    "*.{ts}": "npm run lint"
-  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{ts}": "npm run lint"
   }
 }
