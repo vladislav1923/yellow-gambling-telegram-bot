@@ -20,7 +20,7 @@ const fetchLeaguesMatchesForToday = async (leagueId: string): Promise<PlannedMat
         secret: API_SECRET,
     };
 
-    return get<PlannedMatchesResponseDto>('api-client/fixtures/matches.json', params);
+    return get<PlannedMatchesResponseDto>('api-client/fixtures/matches.json', PlannedMatchesResponseDto, params);
 };
 
 export { fetchLeaguesMatchesForToday };

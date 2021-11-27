@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { env } from 'process';
 import { DataInterface } from '../interfaces/data.interface';
+import {deserialize} from "typescript-json-serializer";
+import {BaseDto} from "./dto/base.dto";
 
 axios.interceptors.request.use(request => {
     console.log('Starting Request', JSON.stringify(request, null, 2));
@@ -12,12 +14,18 @@ axios.interceptors.response.use(response => {
     return response;
 });
 
-const get = async <T>(url: string, params: DataInterface): Promise<T> => {
+const get = async <T extends BaseDto>(
+    url: string,
+    model: new (...params: Array<any>) => T,
+    params: DataInterface,
+): Promise<T> => {
     const fullUrl = `${env.API_URL}/${url}`;
-    return axios.get(fullUrl, {
+    const response = await axios.get(fullUrl, {
         responseType: 'json',
         params,
     });
+
+    return deserialize<T>(response.data, model);
 };
 
 export { get };

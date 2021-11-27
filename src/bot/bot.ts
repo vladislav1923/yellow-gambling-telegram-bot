@@ -22,12 +22,11 @@ const startBot = (token: string): void => {
 
         if (leaguesMap.has(value)) {
             const response: PlannedMatchesResponseDto = await getMatches(value);
-            console.log(response.data.fixtures);
-            // response.data.fixtures.forEach((match) => {
-            //     ctx.reply(`
-            //         ${match.home_name} vs ${match.away_name}
-            //     `)
-            // });
+            response.data.fixtures.forEach((match) => {
+                ctx.reply(`
+                    ${match.home_name} vs ${match.away_name}
+                `)
+            });
         }
     });
     bot.help((ctx) => ctx.reply('Помоги себе сам'));
