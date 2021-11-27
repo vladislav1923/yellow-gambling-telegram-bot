@@ -3,6 +3,7 @@ import { commandsList } from '../constants/commands-list';
 import { leaguesMap } from '../constants/leagues-map';
 import { getMatches } from '../services/matches/matches.service';
 import { PlannedMatchesResponseDto } from '../api/dto/planned-matches-response.dto';
+import { PlannedMatchDto } from '../api/dto/planned-match.dto';
 
 const startBot = (token: string): void => {
     const bot = new Telegraf(token);
@@ -22,10 +23,10 @@ const startBot = (token: string): void => {
 
         if (leaguesMap.has(value)) {
             const response: PlannedMatchesResponseDto = await getMatches(value);
-            response.data.fixtures.forEach((match) => {
+            response?.data?.fixtures.forEach((match: PlannedMatchDto) => {
                 ctx.reply(`
                     ${match.home_name} vs ${match.away_name}
-                `)
+                `);
             });
         }
     });

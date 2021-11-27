@@ -1,8 +1,8 @@
-import {JsonProperty, Serializable} from "typescript-json-serializer";
-import {BaseDto} from "./base.dto";
+import { JsonProperty, Serializable } from 'typescript-json-serializer';
+import { BaseDto } from './base.dto';
 
 @Serializable()
-export class PlannedMatchesDto extends BaseDto {
+export class PlannedMatchDto extends BaseDto {
     @JsonProperty() id: number | undefined;
     @JsonProperty() home_id: string | undefined;
     @JsonProperty() home_name: string | undefined;

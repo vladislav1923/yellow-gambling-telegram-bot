@@ -1,4 +1,4 @@
-import {Serializable} from "typescript-json-serializer";
+import { Serializable } from 'typescript-json-serializer';
 
 @Serializable()
 export class BaseDto {}
