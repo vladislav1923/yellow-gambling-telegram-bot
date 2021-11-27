@@ -8,7 +8,7 @@
     "start:dev": "clear & tsc && concurrently \"tsc -w\" \"nodemon dist/index.js\"",
     "lint": "clear & npx eslint src",
     "lint:fix": "clear & npx eslint src --fix",
-    "husky:prepare": "husky install"
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
