@@ -8,7 +8,7 @@
     "start:dev": "clear & tsc && concurrently \"tsc -w\" \"nodemon dist/index.js\"",
     "lint": "clear & npx eslint src",
     "lint:fix": "clear & npx eslint src --fix",
-    "prepare": "husky install"
+    "husky:prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
@@ -30,12 +30,12 @@
     "nodemon": "^2.0.15",
     "typescript-json-serializer": "^3.4.4"
   },
+  "lint-staged": {
+    "{ts}": "npm run lint"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
-  },
-  "lint-staged": {
-    "{ts}": "npm run lint"
   }
 }
