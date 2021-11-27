@@ -31,6 +31,19 @@ module.exports = {
         'semi': [
             'error',
             'always'
-        ]
+        ],
+        'comma-dangle': [
+            'error',
+            'always-multiline',
+        ],
+        'block-spacing': [
+            'error',
+            'always',
+        ],
+        'object-curly-spacing': [
+            'error',
+            'always',
+        ],
+        'no-multi-spaces': ['error']
     }
 };

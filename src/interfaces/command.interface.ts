@@ -1,4 +1,4 @@
-export interface CommandItemInterface {
+export interface CommandInterface {
     command: string;
     description: string;
 }

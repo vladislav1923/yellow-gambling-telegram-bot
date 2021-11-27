@@ -1,11 +1,34 @@
-import {Telegraf} from 'telegraf';
-import {commandsList} from '../constants/commands-list';
+import { Telegraf, Markup } from 'telegraf';
+import { commandsList } from '../constants/commands-list';
+import { leaguesMap } from '../constants/leagues-map';
+import { getMatches } from '../services/matches/matches.service';
+import { PlannedMatchesResponseDto } from '../api/dto/planned-matches-response.dto';
 
 const startBot = (token: string): void => {
     const bot = new Telegraf(token);
     bot.start((ctx) => {
         ctx.setMyCommands(commandsList);
-        ctx.reply('Wel come click /help');
+        ctx.reply('Wel come click /matches');
+    });
+    bot.command('matches', (ctx) => {
+        const leaguesButtons = [];
+        for (const [id, name] of leaguesMap) {
+            leaguesButtons.push(Markup.button.callback(name, id));
+        }
+        ctx.reply('Выбери лигу', Markup.inlineKeyboard(leaguesButtons));
+    });
+    bot.action(/.+/, async (ctx) => {
+        const value = ctx.match[0];
+
+        if (leaguesMap.has(value)) {
+            const response: PlannedMatchesResponseDto = await getMatches(value);
+            console.log(response.data.fixtures);
+            // response.data.fixtures.forEach((match) => {
+            //     ctx.reply(`
+            //         ${match.home_name} vs ${match.away_name}
+            //     `)
+            // });
+        }
     });
     bot.help((ctx) => ctx.reply('Помоги себе сам'));
     bot.on('text', (ctx) => {
