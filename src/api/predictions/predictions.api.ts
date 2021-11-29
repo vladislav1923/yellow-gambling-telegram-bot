@@ -14,7 +14,7 @@ const fetchPredictions = async (): Promise<PredictionsResponseDto> => {
     }
 
     const today = getToday();
-    const url = `${PREDICTIONS_API_URL}/api/v2/predictions`;
+    const url = `https://${PREDICTIONS_API_URL}/api/v2/predictions`;
     const params: DataInterface = {
         iso_date: today,
         federation: 'UEFA',

@@ -5,11 +5,13 @@ import { PredictionCompetitionNameEnum } from '../../enums/prediction-competitio
 import { PredictionStatusesEnum } from '../../enums/prediction-statuses.enum';
 import { leaguesTitles } from '../../constants/leagues-titles';
 import { leaguesIcons } from '../../constants/leagues-icons';
+import { format } from 'date-fns';
+import { zonedTimeToUtc } from 'date-fns-tz';
+import ruLocale from 'date-fns/locale/ru/index.js';
 
 const getPredictionsMessage = async (): Promise<string> => {
     const response = await fetchPredictions();
-    console.log('response', response);
-    const predictions = filterPredictions(response.data);
+    const predictions = filterPredictions(response?.data ?? []);
 
     return createPredictionMessage(predictions);
 };
@@ -42,20 +44,34 @@ const createPredictionMessage = (predictions: PredictionDto[]): string => {
 
     for (const [league, predictions] of leagues) {
         const leagueTitle = leaguesTitles.get(league);
-        const leagueView = `${leagueTitle} ${leaguesIcons.get(league)} \n`;
-        const leaguePredictionsView = predictions.map((prediction: PredictionDto) => {
-            return `
-                ${prediction.home_team} vs ${prediction.away_team} \n
-                Прогноз: ${prediction.prediction} \n
-                ${prediction.is_expired ? 'Результат: ' + prediction.result : ''}
-                ${prediction.is_expired ? ' ' + getStatusEmoji(prediction.status) : ''} \n
-            `;
-        });
+        const leagueView = `${leagueTitle} ${leaguesIcons.get(league)}`;
+        const leaguesPredictionsView = getLeaguesPredictionsView(league, predictions);
 
-        predictionsViews.push(`${leagueView}${leaguePredictionsView}`);
+        predictionsViews.push(`${leagueView}\n${leaguesPredictionsView}`);
     }
 
     return predictionsViews.join('\n\n');
+};
+
+const getLeaguesPredictionsView = (league: PredictionCompetitionClustersEnum, predictions: PredictionDto[]): string => {
+    const leaguePredictionsView = predictions.map((prediction: PredictionDto) => {
+        const teamsView = `${prediction.home_team} vs ${prediction.away_team}`;
+        const predictionView = `Прогноз: ${prediction.prediction}`;
+        const resultView = prediction.is_expired
+            ? getResult(prediction)
+            : `${getMoscowTime(prediction.start_date)}`;
+        return `${teamsView} \n ${predictionView} \n ${resultView}`;
+    });
+
+    return leaguePredictionsView.join('\n\n');
+};
+
+const getResult = (prediction: PredictionDto): string => {
+    if (!prediction.result || prediction.status === PredictionStatusesEnum.Pending) {
+        return 'Расчитываем результат';
+    }
+
+    return `Результат: ${prediction.result} ${getStatusEmoji(prediction.status)}`;
 };
 
 const getStatusEmoji = (status: PredictionStatusesEnum | null): string => {
@@ -67,6 +83,18 @@ const getStatusEmoji = (status: PredictionStatusesEnum | null): string => {
     default:
         return '';
     }
+};
+
+const getMoscowTime = (date: string | null): string => {
+    if (!date) {
+        return '';
+    }
+    const moscowDate = zonedTimeToUtc(date, 'Moscow');
+    const time = format(moscowDate, 'HH:mm', {
+        locale: ruLocale,
+    });
+
+    return `${time} МСК`;
 };
 
 const filterPredictions = (predictions: PredictionDto[]): PredictionDto[] => {
