@@ -3,8 +3,8 @@ import { CommandsEnum } from '../enums/commands.enum';
 
 export const commandsList: CommandInterface[] = [
     {
-        command: CommandsEnum.Matches,
-        description: 'Список матчей на сегодня',
+        command: CommandsEnum.Predictions,
+        description: 'Прогнозы на сегодня',
     },
     {
         command: CommandsEnum.Help,

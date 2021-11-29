@@ -1,40 +1,31 @@
-import { Telegraf, Markup } from 'telegraf';
+import { Telegraf } from 'telegraf';
 import { commandsList } from '../constants/commands-list';
-import { leaguesMap } from '../constants/leagues-map';
-import { getMatches } from '../services/matches/matches.service';
-import { PlannedMatchesResponseDto } from '../api/dto/planned-matches-response.dto';
-import { PlannedMatchDto } from '../api/dto/planned-match.dto';
+import { getPredictionsMessage } from '../services/predictions/predictions.service';
+import { CommandsEnum } from '../enums/commands.enum';
+import { welcomeMessage } from '../constants/welcome-message';
+import { helpMessage } from '../constants/help-message';
+import { defaultMessage } from '../constants/default-message';
+import { errorMessage } from '../constants/error-message';
 
 const startBot = (token: string): void => {
     const bot = new Telegraf(token);
     bot.start((ctx) => {
         ctx.setMyCommands(commandsList);
-        ctx.reply('Wel come click /matches');
+        ctx.reply(welcomeMessage);
     });
-    bot.command('matches', (ctx) => {
-        const leaguesButtons = [];
-        for (const [id, name] of leaguesMap) {
-            leaguesButtons.push(Markup.button.callback(name, id));
-        }
-        ctx.reply('Выбери лигу', Markup.inlineKeyboard(leaguesButtons));
-    });
-    bot.action(/.+/, async (ctx) => {
-        const value = ctx.match[0];
-
-        if (leaguesMap.has(value)) {
-            const response: PlannedMatchesResponseDto = await getMatches(value);
-            response?.data?.fixtures.forEach((match: PlannedMatchDto) => {
-                ctx.reply(`
-                    ${match.home_name} vs ${match.away_name}
-                `);
-            });
+    bot.command(CommandsEnum.Predictions, async (ctx) => {
+        try {
+            const predictionMessage = await getPredictionsMessage();
+            ctx.reply(predictionMessage);
+        } catch (e) {
+            console.error(e);
+            ctx.reply(errorMessage);
         }
     });
-    bot.help((ctx) => ctx.reply('Помоги себе сам'));
+    bot.help((ctx) => ctx.reply(helpMessage));
     bot.on('text', (ctx) => {
-        ctx.reply('Ничего не понял. Ильдар, это ты? Посмотри команды здесь /help');
+        ctx.reply(defaultMessage);
     });
-    bot.hears('hi', (ctx) => ctx.reply('Hey there'));
     bot.launch();
 
     // Enable graceful stop

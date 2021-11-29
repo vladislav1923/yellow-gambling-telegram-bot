@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
-import { env } from 'process';
 import { DataInterface } from '../interfaces/data.interface';
 import { deserialize } from 'typescript-json-serializer';
 import { BaseDto } from './dto/base.dto';
@@ -19,11 +18,12 @@ const get = async <T extends BaseDto>(
     url: string,
     model: new (...params: Array<any>) => T,
     params: DataInterface,
+    headers?: DataInterface,
 ): Promise<T> => {
-    const fullUrl = `${env.API_URL}/${url}`;
-    const response = await axios.get(fullUrl, {
+    const response = await axios.get(url, {
         responseType: 'json',
         params,
+        headers,
     });
 
     return deserialize<T>(response.data, model);
