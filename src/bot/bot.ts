@@ -1,11 +1,11 @@
 import { Telegraf } from 'telegraf';
 import { commandsList } from '../constants/commands-list';
-import { getPredictionsMessage } from '../services/predictions/predictions.service';
 import { CommandsEnum } from '../enums/commands.enum';
 import { welcomeMessage } from '../constants/welcome-message';
 import { helpMessage } from '../constants/help-message';
 import { defaultMessage } from '../constants/default-message';
 import { errorMessage } from '../constants/error-message';
+import { getFixtures } from '../services/fixtures/fixtures.service';
 
 const startBot = (token: string): void => {
     const bot = new Telegraf(token);
@@ -13,10 +13,9 @@ const startBot = (token: string): void => {
         ctx.setMyCommands(commandsList);
         ctx.reply(welcomeMessage);
     });
-    bot.command(CommandsEnum.Predictions, async (ctx) => {
+    bot.command(CommandsEnum.Matches, async (ctx) => {
         try {
-            const predictionMessage = await getPredictionsMessage();
-            ctx.reply(predictionMessage);
+            getFixtures();
         } catch (e) {
             console.error(e);
             ctx.reply(errorMessage);
