@@ -5,7 +5,7 @@ import { welcomeMessage } from '../constants/welcome-message';
 import { helpMessage } from '../constants/help-message';
 import { defaultMessage } from '../constants/default-message';
 import { errorMessage } from '../constants/error-message';
-import { getFixtures } from '../services/fixtures/fixtures.service';
+import { getFixturesListMessage } from '../services/fixtures/fixtures.service';
 
 const startBot = (token: string): void => {
     const bot = new Telegraf(token);
@@ -15,7 +15,8 @@ const startBot = (token: string): void => {
     });
     bot.command(CommandsEnum.Matches, async (ctx) => {
         try {
-            getFixtures();
+            const message = await getFixturesListMessage();
+            await ctx.replyWithHTML(message);
         } catch (e) {
             console.error(e);
             ctx.reply(errorMessage);

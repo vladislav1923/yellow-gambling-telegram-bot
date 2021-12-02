@@ -5,5 +5,6 @@ import { FixtureStatusDto } from './fixture-status.dto';
 @Serializable()
 export class FixtureDetailsDto extends BaseDto {
     @JsonProperty() id: number | null = null;
+    @JsonProperty() date: string | null = null;
     @JsonProperty() status: FixtureStatusDto | null = null;
 }

@@ -3,9 +3,9 @@ import { getToday } from '../../utils/utils';
 import { DataInterface } from '../../interfaces/data.interface';
 import { AxiosRequestHeaders } from 'axios';
 import { get } from '../base';
-import { FixturesListDto } from '../dto/fixtures-list.dto';
+import { FixturesResponseDto } from '../dto/fixtures-response.dto';
 
-const fetchFixturesByLeagueId = async (leagueId: string): Promise<FixturesListDto> => {
+const fetchFixturesByLeagueId = async (leagueId: string): Promise<FixturesResponseDto> => {
     const { RAPID_API_TOKEN, FOOTBALL_API_HOST, FOOTBALL_API_URL } = env;
 
     if (!RAPID_API_TOKEN || !FOOTBALL_API_HOST || !FOOTBALL_API_URL) {
@@ -25,7 +25,13 @@ const fetchFixturesByLeagueId = async (leagueId: string): Promise<FixturesListDt
         'x-rapidapi-key': RAPID_API_TOKEN,
     };
 
-    return get<FixturesListDto>(url, FixturesListDto, params, headers);
+    return get<FixturesResponseDto>(url, FixturesResponseDto, params, headers);
 };
 
-export { fetchFixturesByLeagueId };
+const fetchFixturesByLeaguesIds = async (leagueIds: string[]): Promise<FixturesResponseDto[]> => {
+    return Promise.all([
+        ...leagueIds.map((leagueId: string) => fetchFixturesByLeagueId(leagueId)),
+    ]);
+};
+
+export { fetchFixturesByLeaguesIds, fetchFixturesByLeagueId };
