@@ -29,27 +29,7 @@ const createFeaturesListByLeagueMessage = (
         return '';
     }
 
-    const leagueTitle = createLeagueTitle(fixturesResponse);
-    const fixturesListView = createFixturesListView(fixturesResponse.response, predictionsMap);
-
-    return `<b>${leagueTitle}</b>\n\n${fixturesListView}`;
-};
-
-const createLeagueTitle = (fixturesResponse: FixturesResponseDto): string => {
-    const leagueId = fixturesResponse.parameters
-        ? fixturesResponse.parameters['league'] as CompetitionsIdsEnum
-        : null;
-
-    switch (leagueId) {
-    case CompetitionsIdsEnum.ChampionsLeagueId:
-        return 'Лига Чемпионов 🇪🇺';
-    case CompetitionsIdsEnum.RussianLeagueId:
-        return 'Российская Премьер Лига 🇷🇺';
-    case CompetitionsIdsEnum.EnglandLeagueId:
-        return 'Английская Премьер Лига 🏴󠁧󠁢󠁥󠁮󠁧󠁿';
-    default:
-        return 'Остальное';
-    }
+    return createFixturesListView(fixturesResponse.response, predictionsMap);
 };
 
 const createFixturesListView = (
@@ -72,8 +52,8 @@ const createFixtureView = (
     fixtures: FixtureDto,
     prediction: PredictionDetailsDto | undefined,
 ): string => {
-    const { fixture, teams } = fixtures;
-    if (!fixture || !teams || !prediction) {
+    const { fixture, teams, league } = fixtures;
+    if (!fixture || !teams || !league || !prediction) {
         return '';
     }
     const { home, away } = teams;
@@ -82,10 +62,25 @@ const createFixtureView = (
     }
 
     const moscowTime = getMoscowTime(fixture.date);
-    const teamsTitle = `${home.name} vs ${away.name} ${moscowTime}`;
+    const leagueIcon = getLeagueEmoji(league?.id);
+    const teamsTitle = `${leagueIcon}󠁥󠁮󠁧 <b>${home.name} vs ${away.name}</b> ${moscowTime}`;
     const { advice } = prediction;
 
     return `${teamsTitle}\n${advice}`;
+};
+
+const getLeagueEmoji = (leagueId: number | null): string => {
+    const leagueIdAsString = String(leagueId);
+    switch (leagueIdAsString) {
+    case CompetitionsIdsEnum.ChampionsLeagueId:
+        return '🇪🇺';
+    case CompetitionsIdsEnum.RussianLeagueId:
+        return '🇷🇺';
+    case CompetitionsIdsEnum.EnglandLeagueId:
+        return '🏴󠁧󠁢󠁥󠁮󠁧󠁿';
+    default:
+        return '';
+    }
 };
 
 export { createFixturesListMessage };

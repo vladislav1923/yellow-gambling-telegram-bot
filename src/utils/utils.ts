@@ -1,5 +1,4 @@
 import { format } from 'date-fns';
-import { zonedTimeToUtc } from 'date-fns-tz';
 import ruLocale from 'date-fns/locale/ru/index.js';
 
 import { FixtureDto } from '../api/dto/fixture.dto';
@@ -14,16 +13,15 @@ const getToday = (pattern: DatePatternsEnum = DatePatternsEnum.ApiDatePattern): 
     });
 };
 
-const getMoscowTime = (timestamp: string | null): string => {
-    if (!timestamp) {
+const getMoscowTime = (date: string | null): string => {
+    if (!date) {
         return '';
     }
 
-    const date = zonedTimeToUtc(new Date(timestamp), 'Moscow');
-    console.log(new Date(timestamp), date);
-    const time = date.toLocaleTimeString();
+    const time = new Date(date).toLocaleTimeString();
+    const cutTime = time.split(':').slice(0, 2).join(':');
 
-    return `${time} МСК`;
+    return `${cutTime} МСК`;
 };
 
 const extractFixturesIds = (fixturesLists: FixturesResponseDto[]): string[] => {

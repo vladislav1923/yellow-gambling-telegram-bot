@@ -19,6 +19,7 @@ const fetchFixturesByLeagueId = async (leagueId: string): Promise<FixturesRespon
         date: today,
         league: leagueId,
         season: '2021',
+        timezone: 'Europe/Moscow',
     };
     const headers: AxiosRequestHeaders = {
         'x-rapidapi-host': FOOTBALL_API_HOST,
