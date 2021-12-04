@@ -9,41 +9,33 @@ const createFixturesListMessage = (
     fixturesByLeagues: FixturesResponseDto[],
     predictionsMap: Map<string, PredictionDetailsDto>,
 ): string => {
-    const matchesListTitle = getMatchesListTitle();
-    const result = fixturesByLeagues.map((fixturesByLeague: FixturesResponseDto) => {
-        return createFeaturesListByLeagueMessage(fixturesByLeague, predictionsMap);
-    });
+    const fixturesListTitle = getFixturesListTitle();
+    const fixturesListView = createFixturesListView(fixturesByLeagues, predictionsMap);
 
-    return `${matchesListTitle}\n${result.join('\n\n')}`;
+    return `${fixturesListTitle}\n\n${fixturesListView}`;
 };
 
-const getMatchesListTitle = (): string => {
+const getFixturesListTitle = (): string => {
     return `<b>Матчи на ${getToday(DatePatternsEnum.RussianDatePattern)}</b>`;
 };
 
-const createFeaturesListByLeagueMessage = (
-    fixturesResponse: FixturesResponseDto,
-    predictionsMap: Map<string, PredictionDetailsDto>,
-): string => {
-    if (fixturesResponse.response.length === 0) {
-        return '';
-    }
-
-    return createFixturesListView(fixturesResponse.response, predictionsMap);
-};
-
 const createFixturesListView = (
-    fixtures: FixtureDto[],
+    fixturesByLeagues: FixturesResponseDto[],
     predictionsMap: Map<string, PredictionDetailsDto>,
 ): string => {
-    const fixturesViews = fixtures.map((fixture: FixtureDto) => {
-        const fixtureId = String(fixture.fixture?.id);
-        const prediction = predictionsMap.has(fixtureId)
-            ? predictionsMap.get(fixtureId)
-            : undefined;
+    const fixturesViews = fixturesByLeagues
+        .map((item: FixturesResponseDto) => item.response)
+        .flat()
+        .sort((a: FixtureDto, b: FixtureDto) => {
+            return Number(a.fixture?.timestamp) - Number(b.fixture?.timestamp);
+        }).map((fixture: FixtureDto) => {
+            const fixtureId = String(fixture.fixture?.id);
+            const prediction = predictionsMap.has(fixtureId)
+                ? predictionsMap.get(fixtureId)
+                : undefined;
 
-        return createFixtureView(fixture, prediction);
-    });
+            return createFixtureView(fixture, prediction);
+        });
 
     return fixturesViews.join('\n\n');
 };
