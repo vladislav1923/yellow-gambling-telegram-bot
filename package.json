@@ -6,6 +6,7 @@
   "scripts": {
     "start:prod": "clear & tsc & node ./dist/index.js",
     "start:dev": "clear & tsc && concurrently \"tsc -w\" \"nodemon dist/index.js\"",
+    "test": "clear & npx jest",
     "lint": "clear & npx eslint src",
     "lint:fix": "clear & npx eslint src --fix",
     "husky:prepare": "husky install"
@@ -21,14 +22,22 @@
     "typescript": "^4.5.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-typescript": "^7.16.0",
+    "@types/jest": "^27.0.3",
     "@types/node": "^16.11.10",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
+    "babel-jest": "^27.4.2",
     "concurrently": "^6.4.0",
     "eslint": "^8.3.0",
     "husky": "^7.0.4",
+    "jest": "^27.4.3",
     "lint-staged": "^12.1.2",
     "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0",
     "typescript-json-serializer": "^3.4.4"
   },
   "husky": {
@@ -37,6 +46,9 @@
     }
   },
   "lint-staged": {
-    "*.{ts}": "npm run lint"
+    "*.{ts}": [
+      "npm run lint",
+      "npm run test"
+    ]
   }
 }

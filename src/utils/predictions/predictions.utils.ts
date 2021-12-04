@@ -51,7 +51,7 @@ const prepareDoubleChancePrediction = (
     if (advice.includes(String(teams.home?.name))) {
         return '1X';
     } else {
-        return 'X2';
+        return 'Х2';
     }
 };
 
