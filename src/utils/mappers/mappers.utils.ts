@@ -1,28 +1,7 @@
-import { format } from 'date-fns';
-import ruLocale from 'date-fns/locale/ru/index.js';
-
-import { FixtureDto } from '../api/dto/fixture.dto';
-import { FixturesResponseDto } from '../api/dto/fixtures-response.dto';
-import { PredictionResponseDto } from '../api/dto/prediction-response.dto';
-import { PredictionDetailsDto } from '../api/dto/prediction-details.dto';
-import { DatePatternsEnum } from '../enums/date-patterns.enum';
-
-const getToday = (pattern: DatePatternsEnum = DatePatternsEnum.ApiDatePattern): string => {
-    return format(new Date(), pattern, {
-        locale: ruLocale,
-    });
-};
-
-const getMoscowTime = (date: string | null): string => {
-    if (!date) {
-        return '';
-    }
-
-    const time = new Date(date).toLocaleTimeString();
-    const cutTime = time.split(':').slice(0, 2).join(':');
-
-    return `${cutTime} МСК`;
-};
+import { FixtureDto } from '../../api/dto/fixture.dto';
+import { FixturesResponseDto } from '../../api/dto/fixtures-response.dto';
+import { PredictionResponseDto } from '../../api/dto/prediction-response.dto';
+import { PredictionDetailsDto } from '../../api/dto/prediction-details.dto';
 
 const extractFixturesIds = (fixturesLists: FixturesResponseDto[]): string[] => {
     const fixturesListsResponses: FixtureDto[][] =
@@ -46,4 +25,4 @@ const createPredictionsMap = (predictionsList: PredictionResponseDto[]): Map<str
     return map;
 };
 
-export { getToday, getMoscowTime, extractFixturesIds, createPredictionsMap };
+export { extractFixturesIds, createPredictionsMap };

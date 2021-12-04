@@ -1,10 +1,11 @@
 import { fetchFixturesByLeaguesIds } from '../../api/fixtures/fixtures.api';
 import { CompetitionsIdsEnum } from '../../enums/competitions-ids.enum';
 import { boringDayMessage } from '../../constants/boring-day-message';
-import { createPredictionsMap, extractFixturesIds, getToday } from '../../utils/utils';
+import { createPredictionsMap, extractFixturesIds } from '../../utils/mappers/mappers.utils';
 import { fetchPredictionsByFixturesIds } from '../../api/predictions/predictions.api';
 import { createFixturesListMessage } from '../view/view.service';
 import { getMessageToCache, setMessageToCache } from '../cache/cache.service';
+import { getToday } from '../../utils/dates/dates.utils';
 
 const getFixturesListMessage = async (): Promise<string> => {
     const today = getToday();

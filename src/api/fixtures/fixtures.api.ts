@@ -1,5 +1,5 @@
 import { env, exit } from 'process';
-import { getToday } from '../../utils/utils';
+import { getToday } from '../../utils/dates/dates.utils';
 import { DataInterface } from '../../interfaces/data.interface';
 import { AxiosRequestHeaders } from 'axios';
 import { get } from '../base';

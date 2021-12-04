@@ -2,7 +2,7 @@ import { FixturesResponseDto } from '../../api/dto/fixtures-response.dto';
 import { PredictionDetailsDto } from '../../api/dto/prediction-details.dto';
 import { CompetitionsIdsEnum } from '../../enums/competitions-ids.enum';
 import { FixtureDto } from '../../api/dto/fixture.dto';
-import { getMoscowTime, getToday } from '../../utils/utils';
+import { getMoscowTime, getToday } from '../../utils/dates/dates.utils';
 import { DatePatternsEnum } from '../../enums/date-patterns.enum';
 
 const createFixturesListMessage = (
