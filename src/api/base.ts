@@ -5,19 +5,11 @@ import { deserialize } from 'typescript-json-serializer';
 import { BaseDto } from './dto/base.dto';
 
 axios.interceptors.request.use(request => {
-    console.log('Starting Request --------');
-    console.log('url: ', request.url);
-    console.log('headers: ', request.headers);
-    console.log('params: ', request.params);
-    console.log('data: ', request.data);
-    console.log('-------------------------');
+    console.log('Request to: ', request.url);
     return request;
 });
 
 axios.interceptors.response.use(response => {
-    console.log('Response --------------- ');
-    console.log('data: ', response.data);
-    console.log('-------------------------');
     return response;
 });
 
