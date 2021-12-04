@@ -4,6 +4,7 @@ import { CompetitionsIdsEnum } from '../../enums/competitions-ids.enum';
 import { FixtureDto } from '../../api/dto/fixture.dto';
 import { getMoscowTime, getToday } from '../../utils/dates/dates.utils';
 import { DatePatternsEnum } from '../../enums/date-patterns.enum';
+import { prepareAdvice } from '../../utils/predictions/predictions.utils';
 
 const createFixturesListMessage = (
     fixturesByLeagues: FixturesResponseDto[],
@@ -41,10 +42,10 @@ const createFixturesListView = (
 };
 
 const createFixtureView = (
-    fixtures: FixtureDto,
+    fixtureData: FixtureDto,
     prediction: PredictionDetailsDto | undefined,
 ): string => {
-    const { fixture, teams, league } = fixtures;
+    const { fixture, teams, league } = fixtureData;
     if (!fixture || !teams || !league || !prediction) {
         return '';
     }
@@ -56,9 +57,9 @@ const createFixtureView = (
     const moscowTime = getMoscowTime(fixture.date);
     const leagueIcon = getLeagueEmoji(league?.id);
     const teamsTitle = `${leagueIcon}󠁥󠁮󠁧 <b>${home.name} vs ${away.name}</b> ${moscowTime}`;
-    const { advice } = prediction;
+    const predictionView = `Прозноз: ${prepareAdvice(fixtureData, prediction)}`;
 
-    return `${teamsTitle}\n${advice}`;
+    return `${teamsTitle}\n${predictionView}`;
 };
 
 const getLeagueEmoji = (leagueId: number | null): string => {

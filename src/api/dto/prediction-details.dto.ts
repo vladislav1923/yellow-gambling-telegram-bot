@@ -4,4 +4,5 @@ import { BaseDto } from './base.dto';
 @Serializable()
 export class PredictionDetailsDto extends BaseDto {
     @JsonProperty() advice: string | null = null;
+    @JsonProperty() under_over: string | null = null;
 }
