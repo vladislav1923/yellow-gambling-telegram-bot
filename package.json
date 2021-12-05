@@ -4,11 +4,11 @@
   "description": "yellow gambling bot for telegramm",
   "main": "dist/index.js",
   "scripts": {
-    "start:prod": "clear & tsc & node ./dist/index.js",
-    "start:dev": "clear & concurrently \"tsc -w\" \"nodemon dist/index.js\"",
+    "start:prod": "clear && rm -rf ./dist && tsc && node ./dist/index.js",
+    "start:dev": "clear && rm -rf ./dist && concurrently \"tsc -w\" \"nodemon dist/index.js\"",
     "test": "clear & npx jest --passWithNoTests",
     "lint": "clear & npx eslint src",
-    "lint:fix": "clear & npx eslint src --fix",
+    "lint:fix": "clear && npx eslint src --fix",
     "husky:prepare": "husky install"
   },
   "author": "",

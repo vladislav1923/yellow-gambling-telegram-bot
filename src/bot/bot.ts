@@ -8,7 +8,7 @@ import { errorMessage } from '../constants/error-message';
 import { getFixturesListMessage } from '../services/fixtures/fixtures.service';
 import { initCache } from '../services/cache/cache.service';
 
-const startBot = (token: string): void => {
+const launchBot = (token: string): void => {
     initCache();
 
     const bot = new Telegraf(token);
@@ -31,9 +31,11 @@ const startBot = (token: string): void => {
     });
     bot.launch();
 
+    console.log('Bot launched');
+
     // Enable graceful stop
     process.once('SIGINT', () => bot.stop('SIGINT'));
     process.once('SIGTERM', () => bot.stop('SIGTERM'));
 };
 
-export { startBot };
+export { launchBot };
