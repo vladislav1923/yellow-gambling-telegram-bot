@@ -66,6 +66,7 @@ const getLeagueEmoji = (leagueId: number | null): string => {
     const leagueIdAsString = String(leagueId);
     switch (leagueIdAsString) {
     case CompetitionsIdsEnum.ChampionsLeagueId:
+    case CompetitionsIdsEnum.EuropeLeagueId:
         return '🇪🇺';
     case CompetitionsIdsEnum.RussianLeagueId:
         return '🇷🇺';
