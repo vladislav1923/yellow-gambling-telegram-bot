@@ -57,7 +57,8 @@ const createFixtureView = (
     const moscowTime = getMoscowTime(fixture.date);
     const leagueIcon = getLeagueEmoji(league?.id);
     const teamsTitle = `${leagueIcon}󠁥󠁮󠁧 <b>${home.name} vs ${away.name}</b> ${moscowTime}`;
-    const predictionView = `Прогноз: ${prepareAdvice(fixtureData, prediction)}`;
+    const preparedAdvice = prepareAdvice(fixtureData, prediction);
+    const predictionView = preparedAdvice ? `Прогноз: ${preparedAdvice}` : '';
 
     return `${teamsTitle}\n${predictionView}`;
 };
