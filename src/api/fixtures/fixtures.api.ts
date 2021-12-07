@@ -4,6 +4,8 @@ import { DataInterface } from '../../interfaces/data.interface';
 import { AxiosRequestHeaders } from 'axios';
 import { get } from '../base';
 import { FixturesResponseDto } from '../dto/fixtures-response.dto';
+import { getLeagueCacheKey } from '../../utils/cache/cache.utils';
+import { getFromCache, setToCache } from '../../services/cache/cache.service';
 
 const fetchFixturesByLeagueId = async (leagueId: string): Promise<FixturesResponseDto> => {
     const { RAPID_API_TOKEN, FOOTBALL_API_HOST, FOOTBALL_API_URL } = env;
@@ -14,6 +16,12 @@ const fetchFixturesByLeagueId = async (leagueId: string): Promise<FixturesRespon
     }
 
     const today = getToday();
+    const cacheKey = getLeagueCacheKey(today, leagueId);
+    const cacheData = await getFromCache(cacheKey);
+    if (cacheData) {
+        return JSON.parse(cacheData) as FixturesResponseDto;
+    }
+
     const url = `${FOOTBALL_API_URL}/fixtures`;
     const params: DataInterface = {
         date: today,
@@ -26,7 +34,10 @@ const fetchFixturesByLeagueId = async (leagueId: string): Promise<FixturesRespon
         'x-rapidapi-key': RAPID_API_TOKEN,
     };
 
-    return get<FixturesResponseDto>(url, FixturesResponseDto, params, headers);
+    const response = await get<FixturesResponseDto>(url, FixturesResponseDto, params, headers);
+    await setToCache(cacheKey, JSON.stringify(response));
+
+    return response;
 };
 
 const fetchFixturesByLeaguesIds = async (leagueIds: string[]): Promise<FixturesResponseDto[]> => {

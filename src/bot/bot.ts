@@ -6,10 +6,10 @@ import { helpMessage } from '../constants/help-message';
 import { defaultMessage } from '../constants/default-message';
 import { errorMessage } from '../constants/error-message';
 import { getFixturesListMessage } from '../services/fixtures/fixtures.service';
-import { initCache } from '../services/cache/cache.service';
+import { initCacheStore } from '../services/cache/cache.service';
 
-const launchBot = (token: string): void => {
-    initCache();
+const launchBot = async (token: string): Promise<void> => {
+    await initCacheStore();
 
     const bot = new Telegraf(token);
     bot.start((ctx) => {

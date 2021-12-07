@@ -3,6 +3,8 @@ import { DataInterface } from '../../interfaces/data.interface';
 import { AxiosRequestHeaders } from 'axios';
 import { get } from '../base';
 import { PredictionResponseDto } from '../dto/prediction-response.dto';
+import { getPredictionCacheKey } from '../../utils/cache/cache.utils';
+import { getFromCache, setToCache } from '../../services/cache/cache.service';
 
 const fetchPredictionByFixtureId = async (fixtureId: string): Promise<PredictionResponseDto> => {
     const { RAPID_API_TOKEN, FOOTBALL_API_HOST, FOOTBALL_API_URL } = env;
@@ -10,6 +12,12 @@ const fetchPredictionByFixtureId = async (fixtureId: string): Promise<Prediction
     if (!RAPID_API_TOKEN || !FOOTBALL_API_HOST || !FOOTBALL_API_URL) {
         console.error('Env variables are not defined');
         exit(1);
+    }
+
+    const cacheKey = getPredictionCacheKey(fixtureId);
+    const cacheData = await getFromCache(cacheKey);
+    if (cacheData) {
+        return JSON.parse(cacheData) as PredictionResponseDto;
     }
 
     const url = `${FOOTBALL_API_URL}/predictions`;
@@ -21,7 +29,10 @@ const fetchPredictionByFixtureId = async (fixtureId: string): Promise<Prediction
         'x-rapidapi-key': RAPID_API_TOKEN,
     };
 
-    return get<PredictionResponseDto>(url, PredictionResponseDto, params, headers);
+    const response = await get<PredictionResponseDto>(url, PredictionResponseDto, params, headers);
+    await setToCache(cacheKey, JSON.stringify(response));
+
+    return response;
 };
 
 const fetchPredictionsByFixturesIds = async (fixtureId: string[]): Promise<PredictionResponseDto[]> => {
